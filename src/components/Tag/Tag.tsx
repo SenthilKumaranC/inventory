@@ -41,7 +41,7 @@ const Tag = (props: any) => {
   return (
     <div
       key={tag.id}
-      className="cursor-pointer bg-white-500 text-black h-9 grid grid-cols-[1fr_100px] items-center justify-center"
+      className="cursor-pointer px-5 bg-indigo-400 text-white h-9 grid grid-cols-[1fr_100px] items-center justify-center"
       onClick={() => {
         setCurrentIdHandler(tag.id, {
           level: tag.level + 1,

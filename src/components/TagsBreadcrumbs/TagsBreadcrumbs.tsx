@@ -18,7 +18,7 @@ const FirstEnabled = (props: any) => {
       <a
         onClick={props.onClick}
         href="#"
-        className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+        className="ml-1 inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
       >
         All
       </a>
@@ -31,7 +31,7 @@ const FirstDisabled = () => {
     <li className="inline-flex items-center">
       <a
         href="#"
-        className="inline-flex items-center text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400"
+        className="ml-1 inline-flex items-center text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400"
       >
         All
       </a>
