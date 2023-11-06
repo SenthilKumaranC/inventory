@@ -5,7 +5,7 @@ const Products = () => {
   console.log(data, isLoading)
   return (
     <>
-      {data.map((singleData: any) => {
+      {data?.map((singleData: any) => {
         return <div>{JSON.stringify(singleData)}</div>
       })}
     </>
