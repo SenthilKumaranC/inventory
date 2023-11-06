@@ -1,26 +1,33 @@
-import { useForm, SubmitHandler } from "react-hook-form"
+import { useForm, SubmitHandler, FieldValue, FieldValues } from "react-hook-form"
 import { useCallback } from "react"
 import { signInAction } from "../../features/auth/signIn.saga"
 import { useAppDispatch } from "../../app/hooks"
+import Form from "../Form/Form"
+import TextInput from "../Inputs/TextInput"
+import PasswordInput from "../Inputs/PasswordInput"
 
-interface IFormInput {
+interface ICredential {
   username: string
   password: string
 }
 
+
+const UsernameInput = TextInput<ICredential>
+const PasswordTextInput = PasswordInput<ICredential>
+
 const SignIn = () => {
-  const { register, handleSubmit } = useForm<IFormInput>()
   const dispatch = useAppDispatch()
-  const onSubmit: SubmitHandler<IFormInput> = useCallback(
+  const onSubmit: SubmitHandler<FieldValues> = useCallback(
     (data) => {
       dispatch(signInAction(data.username, data.password))
     },
     [dispatch],
   )
 
+
   return (
     <div className="w-full max-w-xs">
-      <form
+      {/* <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
       >
@@ -65,7 +72,26 @@ const SignIn = () => {
             Sign In
           </button>
         </div>
-      </form>
+      </form> */}
+      <Form onSubmit={onSubmit}>
+        <UsernameInput
+          name="username"
+          inputProps={{
+            placeholder: "Enter user Name",
+          }}
+          labelProps={{
+            children: "User Name",
+          }} />
+          <PasswordTextInput 
+            name="password"
+            inputProps={{
+              placeholder: "Enter password Name",
+            }}
+            labelProps={{
+              children: "Password",
+            }}
+          />4 
+      </Form>
       <p className="text-center text-gray-500 text-xs">
         &copy;2023 Thirsty Neurons. All rights reserved.
       </p>
