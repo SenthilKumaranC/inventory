@@ -90,7 +90,7 @@ const SignIn = () => {
             labelProps={{
               children: "Password",
             }}
-          />4 
+          />
       </Form>
       <p className="text-center text-gray-500 text-xs">
         &copy;2023 Thirsty Neurons. All rights reserved.
