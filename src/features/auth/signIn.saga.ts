@@ -1,7 +1,7 @@
 import { put, takeEvery } from "redux-saga/effects"
 import * as Realm from "realm-web"
 import { APP_ID } from "../../App"
-import { authReceieved } from "./auth.slice"
+import { logIn } from "./auth.slice"
 
 const SIGN_IN = "SIGN_IN"
 export const signInAction = (username: string, password: string) => ({
@@ -23,7 +23,7 @@ function* signInHandler(action: ReturnType<typeof signInAction>) {
     const user: Realm.User = yield app.logIn(credentials)
     console.log(user)
     yield put(
-      authReceieved({
+      logIn({
         email: user.profile.email,
         accessToken: user.accessToken,
       }),

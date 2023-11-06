@@ -1,22 +1,25 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit"
-import counterReducer from "../features/counter/counterSlice"
 import tagsSlice from "../features/tags/tags.slice"
-import productsSlice from "../features/products/products.slice"
 import createSagaMiddlware from "redux-saga"
 import watchSignInHandler from "../features/auth/signIn.saga"
 import authSlice from "../features/auth/auth.slice"
 import tagsApi from "../features/tags/tags.query"
+import productsApi from "../features/products/products.api"
 
 const sagaMiddlware = createSagaMiddlware()
 
 export const store = configureStore({
-  middleware: (gM) => [...gM(), sagaMiddlware, tagsApi.middleware],
+  middleware: (gM) => [
+    ...gM(),
+    sagaMiddlware,
+    tagsApi.middleware,
+    productsApi.middleware,
+  ],
   reducer: {
-    counter: counterReducer,
     auth: authSlice.reducer,
     tags: tagsSlice.reducer,
-    products: productsSlice.reducer,
     [tagsApi.reducerPath]: tagsApi.reducer,
+    [productsApi.reducerPath]: productsApi.reducer,
   },
 })
 

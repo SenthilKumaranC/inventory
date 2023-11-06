@@ -1,8 +1,7 @@
 import { useForm, SubmitHandler } from "react-hook-form"
-import { APP_ID } from "../../App"
 import { useCallback } from "react"
-import { useDispatch } from "react-redux"
 import { signInAction } from "../../features/auth/signIn.saga"
+import { useAppDispatch } from "../../app/hooks"
 
 interface IFormInput {
   username: string
@@ -11,7 +10,7 @@ interface IFormInput {
 
 const SignIn = () => {
   const { register, handleSubmit } = useForm<IFormInput>()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const onSubmit: SubmitHandler<IFormInput> = useCallback(
     (data) => {
       dispatch(signInAction(data.username, data.password))

@@ -1,4 +1,4 @@
-import {
+/* import {
   createEntityAdapter,
   createSelector,
   createSlice,
@@ -11,8 +11,6 @@ export interface IProduct {
   description: string
   rating: number
   testimony: string[]
-  /*partialSellingAllowed: boolean
-  customize: ?????*/
   specification: any[]
   lowestQanitytValue: number
   mutiple: number
@@ -42,3 +40,4 @@ export const { selectAll: selectAllProducts } =
   entityAdapter.getSelectors(selectProducts)
 
 export default productsSlice
+ */

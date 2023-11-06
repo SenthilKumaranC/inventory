@@ -4,7 +4,8 @@ import axios from "axios"
 import * as Realm from "realm-web"
 import { Outlet, useNavigate } from "react-router-dom"
 import "./index.css"
-import { selectAuthDoc } from "./features/auth/auth.slice"
+import { logIn, selectAuthDoc } from "./features/auth/auth.slice"
+import { useAppDispatch } from "./app/hooks"
 
 export const APP_ID = "application-0-itfjy"
 export const app = new Realm.App({ id: "application-0-itfjy" })
@@ -16,11 +17,30 @@ export const axiosInstance1 = axios.create({
 function App() {
   const auth = useSelector(selectAuthDoc)
 
+  const dispatch = useAppDispatch()
+
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (
+      app.currentUser &&
+      app.currentUser?.accessToken &&
+      app.currentUser?.profile.email
+    ) {
+      dispatch(
+        logIn({
+          accessToken: app.currentUser?.accessToken,
+          email: app.currentUser?.profile.email,
+        }),
+      )
+    }
+  }, [dispatch])
 
   useEffect(() => {
     if (auth.accessToken) {
       navigate("dashboard")
+    } else {
+      navigate("/")
     }
   }, [auth.accessToken, navigate])
 

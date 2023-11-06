@@ -2,13 +2,30 @@ import React from "react"
 import ReactDOM from "react-dom/client"
 import { Provider } from "react-redux"
 import { store } from "./app/store"
-import App from "./App"
+import App, { APP_ID } from "./App"
 import "./index.css"
-import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom"
+import {
+  LoaderFunctionArgs,
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+  redirect,
+} from "react-router-dom"
 import AuthPage from "./pages/Auth/Auth.page"
 import DashboardPage from "./pages/Dashboard/Dashboard.page"
 import ProductsPage from "./pages/ProductsPage/Products.page"
 import TagsPage from "./pages/TagsPage/Tags.page"
+import * as Realm from "realm-web"
+
+function protectedLoader({ request }: LoaderFunctionArgs) {
+  const app = Realm.App.getApp(APP_ID)
+  if (!app.currentUser?.accessToken) {
+    let params = new URLSearchParams()
+    params.set("from", new URL(request.url).pathname)
+    return redirect("/")
+  }
+  return null
+}
 
 const router = createBrowserRouter([
   {
@@ -29,10 +46,12 @@ const router = createBrowserRouter([
           },
           {
             path: "products",
+            loader: protectedLoader,
             element: <ProductsPage></ProductsPage>,
           },
           {
             path: "tags",
+            loader: protectedLoader,
             element: <TagsPage></TagsPage>,
           },
         ],

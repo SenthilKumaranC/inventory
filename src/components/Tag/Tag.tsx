@@ -1,7 +1,7 @@
-import { useDispatch } from "react-redux"
 import { deleteTag } from "../../features/tags/tags.slice"
 import { useCallback } from "react"
 import { axiosInstance1 } from "../../App"
+import { useAppDispatch } from "../../app/hooks"
 
 const DeleteIcon = (props: any) => {
   const { onClick } = props
@@ -33,7 +33,7 @@ const DeleteIcon = (props: any) => {
 }
 const Tag = (props: any) => {
   const { tag, setCurrentIdHandler } = props
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const deleteTagHandler = useCallback(async () => {
     const { data } = await axiosInstance1.delete(`tags/${tag.id}`)
     dispatch(deleteTag(data))
