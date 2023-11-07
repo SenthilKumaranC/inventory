@@ -14,6 +14,11 @@ export const FormContext = createContext<UseFormReturn<
 
 export interface IFormProps extends PropsWithChildren {
   onSubmit: SubmitHandler<FieldValues>
+  submitText: string
+  formProps?: React.DetailedHTMLProps<
+    React.LabelHTMLAttributes<HTMLFormElement>,
+    HTMLFormElement
+  >
 }
 
 const Form = (props: IFormProps) => {
@@ -25,15 +30,16 @@ const Form = (props: IFormProps) => {
     <FormContext.Provider value={form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        {...props.formProps}
+        className={`px-8 pt-6 pb-8 mb-4 ${props.formProps?.className}`}
       >
         {props.children}
-        <div className="flex items-center justify-between">
+        <div className="w-full h-full flex items-center justify-center">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-blue-500 hover:bg-blue-700  text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
-            Submit
+            {props.submitText}
           </button>
         </div>
       </form>

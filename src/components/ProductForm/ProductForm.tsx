@@ -11,6 +11,7 @@ import {
   useAddProductMutation,
 } from "../../features/products/products.api"
 import { useNavigate } from "react-router-dom"
+import Modal from "../Modal/Modal"
 
 const ProductTextInput = TextInput<IProduct>
 const ProductNumericInput = NumericInput<IProduct>
@@ -30,60 +31,59 @@ const ProductForm = () => {
   )
 
   return (
-    <div className="w-full h-full bg-black bg-opacity-30 flex items-center justify-center absolute">
-      <div className="w-full max-w-lg">
-        <Form onSubmit={onSubmit}>
-          <ProductTextInput
-            name="name"
-            inputProps={{
-              placeholder: "Enter Product Name",
-            }}
-            labelProps={{
-              children: "Product Name",
-            }}
-          ></ProductTextInput>
+    <Modal showClose={true}>
+      Add Product
+      <Form onSubmit={onSubmit} submitText="Add Product">
+        <ProductTextInput
+          name="name"
+          inputProps={{
+            placeholder: "Enter Product Name",
+          }}
+          labelProps={{
+            children: "Product Name",
+          }}
+        ></ProductTextInput>
 
-          <ProductTextAreaInput
-            name="description"
-            inputProps={{
-              placeholder: "Enter Product Description",
-            }}
-            labelProps={{
-              children: "Product Description",
-            }}
-          ></ProductTextAreaInput>
+        <ProductTextAreaInput
+          name="description"
+          inputProps={{
+            placeholder: "Enter Product Description",
+          }}
+          labelProps={{
+            children: "Product Description",
+          }}
+        ></ProductTextAreaInput>
 
-          <ProductNumericInput
-            name="totalQuantity"
-            inputProps={{
-              placeholder: "Enter Product Quantity",
-            }}
-            labelProps={{
-              children: "Product Quantity",
-            }}
-          ></ProductNumericInput>
+        <ProductNumericInput
+          name="totalQuantity"
+          inputProps={{
+            placeholder: "Enter Product Quantity",
+          }}
+          labelProps={{
+            children: "Product Quantity",
+          }}
+        ></ProductNumericInput>
 
-          <ProductSelectInput
-            name="unit"
-            inputProps={{
-              children: getOptions(["kilogram", "liter", "piece"]),
-            }}
-            labelProps={{
-              children: "Product Unit",
-            }}
-          ></ProductSelectInput>
-          <ProductSingleOptionInput
-            name="rateType"
-            inputProps={{
-              children: getRadioOptions(["Constant", "Variable"], "rateType"),
-            }}
-            labelProps={{
-              children: "Product Rate Type",
-            }}
-          ></ProductSingleOptionInput>
-        </Form>
-      </div>
-    </div>
+        <ProductSelectInput
+          name="unit"
+          inputProps={{
+            children: getOptions(["kilogram", "liter", "piece"]),
+          }}
+          labelProps={{
+            children: "Product Unit",
+          }}
+        ></ProductSelectInput>
+        <ProductSingleOptionInput
+          name="rateType"
+          inputProps={{
+            children: getRadioOptions(["Constant", "Variable"], "rateType"),
+          }}
+          labelProps={{
+            children: "Product Rate Type",
+          }}
+        ></ProductSingleOptionInput>
+      </Form>
+    </Modal>
   )
 }
 

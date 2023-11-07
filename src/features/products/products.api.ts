@@ -22,6 +22,13 @@ const productsAdapter = createEntityAdapter<IProduct>({
 
 const initialState = productsAdapter.getInitialState()
 
+const appendCollection = (body: any) => ({
+  dataSource: "mongodb-serverless-inventory",
+  database: "inventory",
+  collection: "products",
+  ...body,
+})
+
 const productsApi = createApi({
   baseQuery,
   reducerPath: "products",
@@ -31,11 +38,7 @@ const productsApi = createApi({
       getProducts: build.query<any, void>({
         query: () => ({
           url: "find",
-          body: {
-            dataSource: "mongodb-serverless-inventory",
-            database: "inventory",
-            collection: "products",
-          },
+          body: appendCollection({}),
           method: "POST",
         }),
         providesTags: ["Products"],
@@ -46,12 +49,9 @@ const productsApi = createApi({
       addProduct: build.mutation<void, IProduct>({
         query: (newProduct) => ({
           url: "insertOne",
-          body: {
-            dataSource: "mongodb-serverless-inventory",
-            database: "inventory",
-            collection: "products",
+          body: appendCollection({
             document: newProduct,
-          },
+          }),
           method: "POST",
         }),
         invalidatesTags: ["Products"],
@@ -59,14 +59,11 @@ const productsApi = createApi({
       deleteProduct: build.mutation<void, IProduct>({
         query: (id) => ({
           url: "deleteOne",
-          body: {
-            dataSource: "mongodb-serverless-inventory",
-            database: "inventory",
-            collection: "products",
+          body: appendCollection({
             filter: {
               _id: { $oid: id },
             },
-          },
+          }),
           method: "POST",
         }),
         invalidatesTags: ["Products"],
