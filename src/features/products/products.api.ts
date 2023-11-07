@@ -30,18 +30,43 @@ const productsApi = createApi({
     return {
       getProducts: build.query<any, void>({
         query: () => ({
-          url: "products",
-          method: "GET",
+          url: "find",
+          body: {
+            dataSource: "mongodb-serverless-inventory",
+            database: "inventory",
+            collection: "products",
+          },
+          method: "POST",
         }),
         providesTags: ["Products"],
-        transformResponse: (responseData: IProduct[]) => {
-          return productsAdapter.setAll(initialState, responseData)
+        transformResponse: (responseData: { documents: IProduct[] }) => {
+          return productsAdapter.setAll(initialState, responseData.documents)
         },
       }),
       addProduct: build.mutation<void, IProduct>({
         query: (newProduct) => ({
-          url: "products",
-          body: JSON.stringify(newProduct),
+          url: "insertOne",
+          body: {
+            dataSource: "mongodb-serverless-inventory",
+            database: "inventory",
+            collection: "products",
+            document: newProduct,
+          },
+          method: "POST",
+        }),
+        invalidatesTags: ["Products"],
+      }),
+      deleteProduct: build.mutation<void, IProduct>({
+        query: (id) => ({
+          url: "deleteOne",
+          body: {
+            dataSource: "mongodb-serverless-inventory",
+            database: "inventory",
+            collection: "products",
+            filter: {
+              _id: { $oid: id },
+            },
+          },
           method: "POST",
         }),
         invalidatesTags: ["Products"],
@@ -50,7 +75,11 @@ const productsApi = createApi({
   },
 })
 
-export const { useGetProductsQuery, useAddProductMutation } = productsApi
+export const {
+  useGetProductsQuery,
+  useAddProductMutation,
+  useDeleteProductMutation,
+} = productsApi
 
 export const selectProductsResult = productsApi.endpoints.getProducts.select()
 

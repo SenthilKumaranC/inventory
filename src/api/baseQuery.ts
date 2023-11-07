@@ -1,9 +1,9 @@
 import { fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react"
 import getAccessToken from "./realmUtilities"
 
-const baseQuery = fetchBaseQuery({
+const baseQueryDataAPI = fetchBaseQuery({
   baseUrl:
-    "https://ap-south-1.aws.data.mongodb-api.com/app/application-0-itfjy/endpoint/",
+    "https://ap-south-1.aws.data.mongodb-api.com/app/application-0-itfjy/endpoint/data/v1/action/",
   prepareHeaders: (headers, { getState }) => {
     // By default, if we have a token in the store, let's use that for authenticated requests
 
@@ -16,6 +16,6 @@ const baseQuery = fetchBaseQuery({
   },
 })
 
-const retryBaseQuery = retry(baseQuery, { maxRetries: 6 })
+const retryBaseQuery = retry(baseQueryDataAPI, { maxRetries: 6 })
 
 export default retryBaseQuery
