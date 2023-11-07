@@ -18,12 +18,13 @@ export const CloseIcon = () => {
   )
 }
 
+const duration: any = "--animate__duration"
 const Panel = (props: any) => {
   const cLen = props.children?.length
   const navigate = useNavigate()
   return (
     <div
-      style={{ "--animate__duration": "0.05s" }}
+      style={{ [duration]: "0.05s" }}
       className={`anim w-full max-w-lg grid ${
         cLen === 3 ? "grid-rows-[50px_1fr_50px]" : "grid-rows-[50px_1fr]"
       } shadow-md animate__animated animate__fadeIn`}
