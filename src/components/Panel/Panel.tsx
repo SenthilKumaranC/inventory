@@ -44,6 +44,9 @@ const Panel = (props: any) => {
         )}
       </div>
       <div className="w-full h-full bg-white">{props.children[1]}</div>
+      {props.children[2] && (
+        <div className="w-full h-full bg-white">{props.children[2]}</div>
+      )}
     </div>
   )
 }

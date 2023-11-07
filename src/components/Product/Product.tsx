@@ -7,6 +7,7 @@ import {
 } from "../../features/products/products.api"
 import { useCallback, useEffect, useMemo, useRef } from "react"
 import "animate.css"
+import { useNavigate } from "react-router-dom"
 
 interface IId {
   id: string
@@ -14,10 +15,13 @@ interface IId {
 }
 
 export const DeleteIcon = ({ id }: any) => {
-  const [deleteProduct] = useDeleteProductMutation()
+  const navigate = useNavigate()
+  const showConfirmation = useCallback(() => {
+    navigate("deleteProduct/" + id)
+  }, [id, navigate])
   return (
     <svg
-      onClick={() => deleteProduct(id)}
+      onClick={showConfirmation}
       role="button"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"

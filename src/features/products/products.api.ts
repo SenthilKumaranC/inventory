@@ -56,7 +56,7 @@ const productsApi = createApi({
         }),
         invalidatesTags: ["Products"],
       }),
-      deleteProduct: build.mutation<void, IProduct>({
+      deleteProduct: build.mutation<void, string>({
         query: (id) => ({
           url: "deleteOne",
           body: appendCollection({
