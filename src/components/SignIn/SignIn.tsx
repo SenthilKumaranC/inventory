@@ -1,16 +1,16 @@
-import { useForm, SubmitHandler, FieldValue, FieldValues } from "react-hook-form"
+import { SubmitHandler, FieldValues } from "react-hook-form"
 import { useCallback } from "react"
 import { signInAction } from "../../features/auth/signIn.saga"
 import { useAppDispatch } from "../../app/hooks"
 import Form from "../Form/Form"
 import TextInput from "../Inputs/TextInput"
 import PasswordInput from "../Inputs/PasswordInput"
+import { logInActionThunk } from "../../features/auth/auth.slice"
 
 interface ICredential {
   username: string
   password: string
 }
-
 
 const UsernameInput = TextInput<ICredential>
 const PasswordTextInput = PasswordInput<ICredential>
@@ -19,11 +19,12 @@ const SignIn = () => {
   const dispatch = useAppDispatch()
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
     (data) => {
-      dispatch(signInAction(data.username, data.password))
+      dispatch(
+        logInActionThunk({ username: data.username, password: data.password }),
+      )
     },
     [dispatch],
   )
-
 
   return (
     <div className="w-full max-w-xs">
@@ -81,16 +82,17 @@ const SignIn = () => {
           }}
           labelProps={{
             children: "User Name",
-          }} />
-          <PasswordTextInput 
-            name="password"
-            inputProps={{
-              placeholder: "Enter password Name",
-            }}
-            labelProps={{
-              children: "Password",
-            }}
-          />
+          }}
+        />
+        <PasswordTextInput
+          name="password"
+          inputProps={{
+            placeholder: "Enter password Name",
+          }}
+          labelProps={{
+            children: "Password",
+          }}
+        />
       </Form>
       <p className="text-center text-gray-500 text-xs">
         &copy;2023 Thirsty Neurons. All rights reserved.

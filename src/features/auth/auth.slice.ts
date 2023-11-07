@@ -1,12 +1,6 @@
-import {
-  AnyAction,
-  AsyncThunk,
-  PayloadAction,
-  createAsyncThunk,
-  createSlice,
-} from "@reduxjs/toolkit"
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
-import { appLogOut } from "../../api/realmUtilities"
+import { appLogIn, appLogOut } from "../../api/realmUtilities"
 
 export interface IAuth {
   email: string | undefined
@@ -17,15 +11,21 @@ const initialState: IAuth = {
   email: "",
   accessToken: "",
 }
-const LOG_OUT_ACTION = "auth/logOut"
-export const logOutAction = () => ({ type: LOG_OUT_ACTION })
-
 export const logOutActionThunk: any = createAsyncThunk<void, void>(
-  LOG_OUT_ACTION,
-  async () => {
+  "auth/logOut",
+  async (_, thunkAPI) => {
     await appLogOut()
+    thunkAPI.dispatch(logOut())
   },
 )
+
+export const logInActionThunk: any = createAsyncThunk<
+  void,
+  { username: string; password: string }
+>("auth/logIn", async ({ username, password }, thunkAPI): Promise<any> => {
+  const data = await appLogIn(username, password)
+  thunkAPI.dispatch(logIn(data))
+})
 
 const authSlice = createSlice({
   name: "auth",
@@ -35,16 +35,14 @@ const authSlice = createSlice({
       state.email = action.payload.email
       state.accessToken = action.payload.accessToken
     },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(logOutActionThunk.fulfilled, (state) => {
+    logOut: (state) => {
       state.email = ""
       state.accessToken = ""
-    })
+    },
   },
 })
 
-export const { logIn } = authSlice.actions
+export const { logIn, logOut } = authSlice.actions
 
 export const selectAuthDoc = (rootState: RootState) => rootState.auth
 

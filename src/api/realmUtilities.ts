@@ -12,4 +12,11 @@ export async function appLogOut() {
   await app.currentUser?.logOut()
 }
 
+export async function appLogIn(username: string, password: string) {
+  const app = Realm.App.getApp(APP_ID)
+  const credentials = Realm.Credentials.emailPassword(username, password)
+  const user = await app.logIn(credentials)
+  return { accessToken: user.accessToken, email: user.profile.email }
+}
+
 export default getAccessToken
