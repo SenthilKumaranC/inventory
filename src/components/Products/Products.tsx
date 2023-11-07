@@ -1,13 +1,69 @@
-import { useGetProductsQuery } from "../../features/products/products.api"
+import { useSelector } from "react-redux"
+import {
+  selectProductById,
+  selectProductIds,
+  useGetProductsQuery,
+} from "../../features/products/products.api"
+import Product from "../Product/Product"
+import { useMemo } from "react"
+import { Outlet } from "react-router-dom"
 
 const Products = () => {
-  const { data, isLoading } = useGetProductsQuery()
-  console.log(data, isLoading)
+  const { isLoading } = useGetProductsQuery()
+  const ids = useSelector(selectProductIds)
+
+  const products = useMemo(() => {
+    return ids?.map((id: any, index) => {
+      return <Product key={id} id={id} index={index}></Product>
+    })
+  }, [ids])
+
+  const firstProduct = useSelector(selectProductById(ids[0]))
+
+  const productsColumnHeader = useMemo(() => {
+    if (!firstProduct) return <></>
+    const productKeys = Object.keys(firstProduct)
+    const idIndex = productKeys.findIndex((key) => key === "_id")
+    productKeys.splice(idIndex, 1)
+    const descriptionIndex = productKeys.findIndex(
+      (key) => key === "description",
+    )
+    productKeys.splice(descriptionIndex, 1)
+    productKeys.unshift("S.No")
+    return (
+      <div className="grid grid-cols-[50px_1fr_1fr_1fr] divide-x-2 divide-solid divide-black w-full h-full">
+        {productKeys.map((key) => (
+          <span
+            className=" bg-blue-400 w-full h-full flex items-center justify-center font-extrabold text-lg "
+            key={key}
+          >
+            {key.toUpperCase()}
+          </span>
+        ))}
+      </div>
+    )
+  }, [firstProduct])
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
   return (
     <>
-      {data?.map((singleData: any) => {
-        return <div>{JSON.stringify(singleData)}</div>
-      })}
+      {firstProduct && (
+        <div className="w-full h-full">
+          <div className="grid h-[100vh - 100px] grid-rows-[50px_1fr] overflow-hidden h-full w-full bg-white divide-y-2 divide-solid divide-black border-solid border-black border-2">
+            {productsColumnHeader}
+            <div
+              style={{ height: "calc(100vh - 150px)" }}
+              className="flex flex-col overflow-y-scroll"
+            >
+              {products}
+            </div>
+          </div>
+        </div>
+      )}
+      <Outlet></Outlet>
     </>
   )
 }

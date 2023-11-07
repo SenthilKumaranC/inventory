@@ -1,6 +1,26 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react"
 import baseQuery from "../../api/baseQuery"
-import { IProduct } from "../../components/ProductForm/ProductForm"
+
+import { EntityId, createEntityAdapter, createSelector } from "@reduxjs/toolkit"
+import { RootState } from "../../app/store"
+
+type RateType = "constant" | "variable"
+export type IProduct = {
+  _id: string
+  name: string
+  description: string
+  totalQuantity: number
+  unit: string
+  minimumSellableQuantity: number
+  pricePerMinimumSellableQuantity: number
+  rateType: RateType
+}
+
+const productsAdapter = createEntityAdapter<IProduct>({
+  selectId: (product: IProduct) => product._id,
+})
+
+const initialState = productsAdapter.getInitialState()
 
 const productsApi = createApi({
   baseQuery,
@@ -14,6 +34,9 @@ const productsApi = createApi({
           method: "GET",
         }),
         providesTags: ["Products"],
+        transformResponse: (responseData: IProduct[]) => {
+          return productsAdapter.setAll(initialState, responseData)
+        },
       }),
       addProduct: build.mutation<void, IProduct>({
         query: (newProduct) => ({
@@ -28,5 +51,29 @@ const productsApi = createApi({
 })
 
 export const { useGetProductsQuery, useAddProductMutation } = productsApi
+
+export const selectProductsResult = productsApi.endpoints.getProducts.select()
+
+export const selectProductsData = createSelector(
+  selectProductsResult,
+  (productssResult) => {
+    console.log(productssResult)
+    return productssResult.data
+  },
+)
+
+export const {
+  selectAll: selectAllProducts,
+  selectById,
+  selectIds: selectProductIds,
+  selectEntities: selectProductEntities,
+} = productsAdapter.getSelectors((state: RootState) => {
+  console.log(selectProductsData(state))
+  return selectProductsData(state) ?? initialState
+})
+
+export const selectProductById = (entityId: EntityId) => {
+  return createSelector(selectProductEntities, (entities) => entities[entityId])
+}
 
 export default productsApi

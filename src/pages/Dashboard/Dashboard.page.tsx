@@ -12,7 +12,7 @@ const DashboardPage = () => {
         <div className="w-full h-ful">
           <SideBar></SideBar>
         </div>
-        <div className="w-full h-full bg-gray-400 p-3">
+        <div className="w-full h-full bg-gray-400">
           <Outlet></Outlet>
         </div>
       </div>

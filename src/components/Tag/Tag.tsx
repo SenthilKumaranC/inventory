@@ -8,7 +8,6 @@ const DeleteIcon = (props: any) => {
   const onLocalClick = useCallback(
     (event: any) => {
       event.stopPropagation()
-      console.log("hi")
       onClick()
     },
     [onClick],

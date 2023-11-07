@@ -16,6 +16,7 @@ import DashboardPage from "./pages/Dashboard/Dashboard.page"
 import ProductsPage from "./pages/ProductsPage/Products.page"
 import TagsPage from "./pages/TagsPage/Tags.page"
 import * as Realm from "realm-web"
+import ProductForm from "./components/ProductForm/ProductForm"
 
 function protectedLoader({ request }: LoaderFunctionArgs) {
   const app = Realm.App.getApp(APP_ID)
@@ -48,6 +49,12 @@ const router = createBrowserRouter([
             path: "products",
             loader: protectedLoader,
             element: <ProductsPage></ProductsPage>,
+            children: [
+              {
+                path: "addProduct",
+                element: <ProductForm></ProductForm>,
+              },
+            ],
           },
           {
             path: "tags",

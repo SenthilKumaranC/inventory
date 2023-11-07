@@ -7,7 +7,6 @@ const ProductsPage = () => {
     <div className="w-full h-full grid grid-rows-[50px_1fr] relative">
       <ProductsHeader></ProductsHeader>
       <Products></Products>
-      <ProductForm></ProductForm>
     </div>
   )
 }

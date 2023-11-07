@@ -21,7 +21,6 @@ function* signInHandler(action: ReturnType<typeof signInAction>) {
   )
   try {
     const user: Realm.User = yield app.logIn(credentials)
-    console.log(user)
     yield put(
       logIn({
         email: user.profile.email,

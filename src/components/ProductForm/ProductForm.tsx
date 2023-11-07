@@ -6,31 +6,27 @@ import { FieldValues } from "react-hook-form"
 import TextAreaInput from "../Inputs/TextAreaInput"
 import SelectInput, { getOptions } from "../Inputs/SelectInput"
 import SingleSelectInput, { getRadioOptions } from "../Inputs/SingleSelectInput"
-import { useAddProductMutation } from "../../features/products/products.api"
+import {
+  IProduct,
+  useAddProductMutation,
+} from "../../features/products/products.api"
+import { useNavigate } from "react-router-dom"
 
-type RateType = "constant" | "variable"
-export type IProduct = {
-  name: string
-  description: string
-  totalQuantity: number
-  unit: string
-  minimumSellableQuantity: number
-  pricePerMinimumSellableQuantity: number
-  rateType: RateType
-}
 const ProductTextInput = TextInput<IProduct>
 const ProductNumericInput = NumericInput<IProduct>
 const ProductTextAreaInput = TextAreaInput<IProduct>
 const ProductSelectInput = SelectInput<IProduct>
 const ProductSingleOptionInput = SingleSelectInput<IProduct>
 const ProductForm = () => {
+  const navigate = useNavigate()
   const [addProduct] = useAddProductMutation()
   const onSubmit = useCallback(
     (data: FieldValues) => {
       const newProduct = data as IProduct
       addProduct(newProduct)
+      navigate(-1)
     },
-    [addProduct],
+    [addProduct, navigate],
   )
 
   return (
