@@ -23,9 +23,10 @@ const Panel = (props: any) => {
   const navigate = useNavigate()
   return (
     <div
-      className={`w-full max-w-lg grid ${
+      style={{ "--animate__duration": "0.05s" }}
+      className={`anim w-full max-w-lg grid ${
         cLen === 3 ? "grid-rows-[50px_1fr_50px]" : "grid-rows-[50px_1fr]"
-      } shadow-md`}
+      } shadow-md animate__animated animate__fadeIn`}
     >
       <div className="w-full h-full bg-gray-100 grid grid-cols-[1fr_1fr] items-center px-5 font-extrabold">
         <div className="w-full h-full flex items-center">

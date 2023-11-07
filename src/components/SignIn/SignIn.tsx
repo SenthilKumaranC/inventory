@@ -29,7 +29,7 @@ const SignIn = () => {
   )
 
   return (
-    <div className="w-full max-w-xs flex flex-col gap-5">
+    <div className="w-full max-w-xs flex flex-col">
       <Panel>
         Login
         <Form
@@ -57,9 +57,6 @@ const SignIn = () => {
           />
         </Form>
       </Panel>
-      <p className="text-center text-black text-xs">
-        &copy;2023 Thirsty Neurons. All rights reserved.
-      </p>
     </div>
   )
 }
